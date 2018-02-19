@@ -1,15 +1,20 @@
 # Check list for building application
 ## Setup developpements environment
-1. mkdir affluents
-2. virtualenv venv -p python3
-3. source ./venv/bin/activate
-3. mkdir code
-4. cd code
-5. git init
-6. git remote add origin https://github.com/edgardeloire/affluents.git
-7. git pull https://github.com/edgardeloire/affluents.git
-8. pip freeze > requirements.txt
-9. update .gitignore
+
+```
+
+mkdir affluents
+virtualenv venv -p python3
+source ./venv/bin/activate
+mkdir code
+cd code
+git init
+git remote add origin https://github.com/edgardeloire/affluents.git
+git pull https://github.com/edgardeloire/affluents.git
+pip freeze > requirements.txt
+
+```
+update .gitignore
 
 ## Application structure
 
@@ -34,7 +39,8 @@
 
 ## Logging
 1. Creation module logmanager
-2.
+2. paramétrage de la destination avec  variables : FILE_LOGGING et MAIL_LOGGING
+
 
 ## environment variable
 | Name                  |  Values                                 | Explaination          |
