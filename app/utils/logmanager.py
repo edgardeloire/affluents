@@ -1,4 +1,5 @@
-from app import app
+""" Module Logger """
+from app import app  # retreive app object
 
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
@@ -7,7 +8,8 @@ from time import strftime
 from flask import Flask, render_template, request
 
 if not app.debug:
-    if app.config['MAIL_SERVER']:
+    # Mail Logging
+    if app.config['MAIL_LOGGING']:
         auth = None
         if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
             auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
@@ -21,24 +23,18 @@ if not app.debug:
             credentials=auth, secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+    # File Logging
+    if app.config['FILE_LOGGING']:
+        if not os.path.exists(app.config['LOGGING_PATH']):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler(
+            app.config['LOGGING_PATH'] + '/' + app.config['LOGFILE'], maxBytes=10240, backupCount=10)
+        file_handler.setFormatter(logging.Formatter(app.config['LOGGING_FORMAT']))
+        file_handler.setLevel(app.config['LOGGING_LEVEL'])
+        app.logger.addHandler(file_handler)
 
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/affluents.log', maxBytes=10240,
-                                       backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-    file_handler.setLevel(logging.INFO)
-    app.logger.addHandler(file_handler)
-
-    app.logger.setLevel(logging.INFO)
-    app.logger.info('Microblog startup')
-
-
-def logit():
-    handler = RotatingFileHandler(app.config['LOGFILE'], maxBytes=10000, backupCount=1)
-    handler.setLevel(app.config['LOGGING_LEVEL'])
-    app.logger.addHandler(handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info("\n\n*** " + app.config['LOGFILE'] + ' startup')
 
 
 def logTrace(code_info="missing code information", exc_info="user log info missing"):

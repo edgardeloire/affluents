@@ -46,7 +46,9 @@ class Config(object):
 
     # Logging parameter
     MAIL_SERVER = False
-    LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    MAIL_LOGGING = False
+    FILE_LOGGING = True
+    LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(module)s - %(funcName)s - %(lineno)d - %(message)s'
     LOGGING_PATH = 'logs'
     LOGGING_LEVEL = logging.DEBUG
     LOGFILE = 'affluents.log'
@@ -88,7 +90,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    DEBUG = False
+    DEBUG = True
     SQLALCHEMY_ECHO = True
     DATA_DIRECTORY = join(_cwd, 'data/')
     SQLALCHEMY_DATABASE_NAME = 'dev_fieldBlog.db'
